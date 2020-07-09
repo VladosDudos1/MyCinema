@@ -10,4 +10,9 @@
     <color name="pink">#FE6D8E</color>
 
     <color name="bitGrey">#70000000</color>
+    <color name="yellow">#F1C340</color>
+    <color name="red">#C33D46</color>
+    <color name="blue">#0E4D87</color>
+
+    <color name="darkWhite">#F1F1F1</color>
 </resources>
