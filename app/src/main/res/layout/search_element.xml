@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        app:cardCornerRadius="36dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        android:elevation="8dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="12dp"
+        android:id="@+id/main_card">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="144dp"
+                    android:src="@drawable/hisoka"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"/>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2.5"
+                android:layout_marginEnd="8dp">
+
+
+                <TextView
+                    android:id="@+id/name_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:maxLines="1"
+                    android:text="Охотник х Охотник"
+                    android:textSize="22dp"
+                    android:textColor="@color/black"
+                    android:ellipsize="end"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:text="Plot summary:"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/black"/>
+
+
+
+                <TextView
+                    android:id="@+id/plot_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="12sp"
+                    android:textColor="@color/bitGrey"
+                    android:padding="4dp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:layout_margin="4dp"
+                    android:text="isugiueqfhoyrhopri4qrblkwhgttnfhwpowtnlehlruhoaihb[tih[oighrv;ouhreoih[UIHBE;OIUN;OINPUHVWPHP9UHGVIUHPUHVIUWTIVUHPUPV98WUNHTPVH[SUH[HBST[R8HB[8HRWB[OUITNSBOUHRBPEPUTUHB[98HG[IOWHJGOHPUHWTOUIHg807guricgpwo98ugjpoeith"/>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

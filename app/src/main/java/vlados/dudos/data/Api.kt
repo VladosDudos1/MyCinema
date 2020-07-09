@@ -7,9 +7,11 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import vlados.dudos.Models.ActorModel
 import vlados.dudos.Models.GenreModel
 import vlados.dudos.Models.MovieModel
+import vlados.dudos.Models.SearchModel
 
 interface Api {
 
@@ -28,6 +30,9 @@ interface Api {
 
     @GET("genre/movie/list?api_key=f4247e4401183f4fd54b6f52c8e0b48c&language=ru-RU")
     fun getGenre():Observable<GenreModel>
+
+    @GET("search/movie?api_key=f4247e4401183f4fd54b6f52c8e0b48c&language=ru-Ru&page=1&include_adult=true")
+    fun search(@Query("query") query : String): Observable<SearchModel>
 
     companion object {
         fun createApi(): Api {

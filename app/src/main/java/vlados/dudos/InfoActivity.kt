@@ -30,11 +30,13 @@ class InfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
-        try { Glide.with(img_info)
-                .load("https://image.tmdb.org/t/p/w1280"+ item!!.backdrop_path)
+        try {
+            Glide.with(img_info)
+                .load("https://image.tmdb.org/t/p/w1280" + item!!.backdrop_path)
+                .error(R.drawable.noimage)
                 .into(img_info)
-        }catch (e: Exception){}
-
+        } catch (e: Exception) {
+        }
 
 
         name.text = item!!.original_title
@@ -47,21 +49,25 @@ class InfoActivity : AppCompatActivity() {
 
         realise_date.text = item!!.release_date.removeRange(4..9)
 
-        if (item!!.adult == true){
-          adult.text = "18+"
+        language_txt.text = item!!.original_language
+
+        if (item!!.adult == true) {
+            adult.text = "18+"
         }
-        if (item!!.adult == false) {adult.text = "Family Content"}
+        if (item!!.adult == false) {
+            adult.text = "Family Content"
+        }
 
         val disp = App.dm.api
             .getActor(id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({c ->
+            .subscribe({ c ->
                 rv_cast.layoutManager = GridLayoutManager(this, 4)
                 rv_cast.adapter = CastAdapter(c.cast)
                 pb_cast.visibility = View.GONE
                 rv_cast.visibility = View.VISIBLE
-            },{
+            }, {
                 Log.d("", "")
             })
 
@@ -70,21 +76,24 @@ class InfoActivity : AppCompatActivity() {
             .getGenre()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({i ->
+            .subscribe({ i ->
                 jList = i.genres
-                for (item in item!!.genre_ids){
-                    for (ni in jList){
-                        if (item == ni.id){resultList.add(ni)}
+                for (item in item!!.genre_ids) {
+                    for (ni in jList) {
+                        if (item == ni.id) {
+                            resultList.add(ni)
+                        }
                     }
                 }
-                rv_con_g.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+                rv_con_g.layoutManager =
+                    LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
                 rv_con_g.adapter = GenreAdapter(resultList)
-            },{
+            }, {
                 Log.d("", "")
             })
     }
 
-    fun back(view: View){
+    fun back(view: View) {
         super.onBackPressed()
     }
 }

@@ -1,6 +1,7 @@
 package vlados.dudos
 
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,18 +26,9 @@ import vlados.dudos.fragments.NowFragment
 import vlados.dudos.fragments.PopularFragment
 import vlados.dudos.fragments.SoonFragment
 
-class MainActivity : AppCompatActivity() , TextWatcher{
+class MainActivity : AppCompatActivity(){
 
-    override fun afterTextChanged(s: Editable?) {
 
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//        twString = edit_txt.text.toString()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,12 +76,9 @@ class MainActivity : AppCompatActivity() , TextWatcher{
             text1.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         }
 
-//        edit_txt.addTextChangedListener(this)
-//
-//        search_btn.setOnClickListener {
-//            NowFragment().onDestroy()
-//            openNowFragment()
-//        }
+        search_btn.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
     }
 
     fun changeFragment(fmt: Fragment) {
