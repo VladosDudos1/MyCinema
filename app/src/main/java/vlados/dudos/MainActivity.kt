@@ -1,26 +1,17 @@
 package vlados.dudos
 
-
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.text.method.Touch
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.fragment_now.*
 import vlados.dudos.Adapters.GenreAdapter
 import vlados.dudos.Case.openFragment
-import vlados.dudos.Case.twString
 import vlados.dudos.app.App
 import vlados.dudos.fragments.NowFragment
 import vlados.dudos.fragments.PopularFragment
@@ -46,6 +37,10 @@ class MainActivity : AppCompatActivity(){
             },{
                 Log.d("", "")
             })
+
+        toFavorite.setOnClickListener {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
 
         text1.setOnClickListener {
 

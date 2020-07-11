@@ -32,7 +32,8 @@ interface Api {
     fun getGenre():Observable<GenreModel>
 
     @GET("search/movie?api_key=f4247e4401183f4fd54b6f52c8e0b48c&language=ru-Ru&page=1&include_adult=true")
-    fun search(@Query("query") query : String): Observable<SearchModel>
+    fun searchAdult(@Query("query") query : String): Observable<SearchModel>
+
 
     companion object {
         fun createApi(): Api {

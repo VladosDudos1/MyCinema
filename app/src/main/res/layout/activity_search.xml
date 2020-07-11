@@ -74,6 +74,7 @@
     <ProgressBar
         android:visibility="invisible"
         android:id="@+id/pb_search"
+        android:indeterminateTint="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"/>
@@ -81,6 +82,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="gone"
+        android:layout_marginBottom="8dp"
         android:id="@+id/rv_search"
         android:background="@color/darkWhite"
         android:layout_width="match_parent"

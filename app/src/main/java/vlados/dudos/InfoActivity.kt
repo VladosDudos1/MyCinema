@@ -1,5 +1,8 @@
 package vlados.dudos
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,20 +10,29 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_favorite.*
 import kotlinx.android.synthetic.main.activity_info.*
 import kotlinx.android.synthetic.main.activity_main.*
 import vlados.dudos.Adapters.CastAdapter
 import vlados.dudos.Adapters.GenreAdapter
+import vlados.dudos.Case.favoritelist
 import vlados.dudos.Case.id
 import vlados.dudos.Case.item
+import vlados.dudos.Case.request
 import vlados.dudos.Models.Genre
 import vlados.dudos.Models.GenreModel
+import vlados.dudos.Models.Result
 import vlados.dudos.app.App
 import java.lang.Exception
+import java.util.*
+import kotlin.concurrent.timerTask
 
 class InfoActivity : AppCompatActivity() {
+
 
     var jList = listOf<Genre>()
 
@@ -30,6 +42,16 @@ class InfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
+        val sharedPreferences = getSharedPreferences("item_id", Context.MODE_PRIVATE)
+        val gson2 = Gson()
+        val json2 = sharedPreferences.getString("favorite_list", null)
+        val turnsType = object : TypeToken<MutableList<Result>>() {}.type
+
+        try {
+            favoritelist = gson2.fromJson(json2, turnsType)
+        } catch (e: Exception) {
+        }
+
         try {
             Glide.with(img_info)
                 .load("https://image.tmdb.org/t/p/w1280" + item!!.backdrop_path)
@@ -38,18 +60,49 @@ class InfoActivity : AppCompatActivity() {
         } catch (e: Exception) {
         }
 
+        favorite_card.setOnClickListener {
+            card1.visibility = View.GONE
+            card2.visibility = View.VISIBLE
+            val gson = Gson()
+            favoritelist.add(item!!)
+            val json = gson.toJson(favoritelist)
+            sharedPreferences.edit().putString("favorite_list", json).apply()
+        }
 
-        name.text = item!!.original_title
+        delete_card.setOnClickListener {
+            card1.visibility = View.VISIBLE
+            card2.visibility = View.GONE
 
-        raiting_info.text = item!!.vote_average.toString()
+            val gson = Gson()
+            favoritelist.remove(item!!)
+            val json = gson.toJson(favoritelist)
+            sharedPreferences.edit().putString("favorite_list", json).apply()
+        }
 
-        voices.text = item!!.popularity.toString()
+        try {
+            name.text = item!!.title
 
-        plot.text = item!!.overview
+            raiting_info.text = item!!.vote_average.toString()
 
-        realise_date.text = item!!.release_date.removeRange(4..9)
+            voices.text = item!!.vote_count.toString()
 
-        language_txt.text = item!!.original_language
+            plot.text = item!!.overview
+
+            realise_date.text = item!!.release_date.removeRange(4..9)
+
+            language_txt.text = item!!.original_language
+        } catch (e: Exception) {
+        }
+
+
+        if (item in favoritelist) {
+            card1.visibility = View.GONE
+            card2.visibility = View.VISIBLE
+        }
+        if (item !in favoritelist) {
+            card1.visibility = View.VISIBLE
+            card2.visibility = View.GONE
+        }
 
         if (item!!.adult == true) {
             adult.text = "18+"
@@ -95,5 +148,15 @@ class InfoActivity : AppCompatActivity() {
 
     fun back(view: View) {
         super.onBackPressed()
+        if (request == 1) {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (request == 1) {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
     }
 }

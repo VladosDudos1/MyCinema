@@ -28,7 +28,7 @@ class RvSoonAdapter (val list: List<Result>, val onClickListener: OnClickListene
             .load("https://image.tmdb.org/t/p/w1280"+ list[position].poster_path)
             .error(R.drawable.noimage)
             .into(holder.itemView.img)
-        holder.itemView.raiting.text = list[position].vote_average.toString()
+        holder.itemView.raiting.rating = (list[position].vote_average/2).toFloat()
 
         holder.itemView.main_layout.setOnClickListener {
             onClickListener.click(list[position])

@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_now.view.*
 import kotlinx.android.synthetic.main.popular_fragment.*
 import vlados.dudos.R
 import vlados.dudos.Adapters.RvAdapter
-import vlados.dudos.Case.newTheater
+import vlados.dudos.Case.request
 import vlados.dudos.Case.twString
 import vlados.dudos.InfoActivity
 import vlados.dudos.MainActivity
@@ -31,6 +31,7 @@ class NowFragment : Fragment(), RvAdapter.OnClickListener {
 
     override fun click(data: Result){
         startActivity(Intent(activity, InfoActivity::class.java))
+        request = 0
     }
 
 

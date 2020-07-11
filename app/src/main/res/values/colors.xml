@@ -15,4 +15,12 @@
     <color name="blue">#0E4D87</color>
 
     <color name="darkWhite">#F1F1F1</color>
+
+    <color name="fgo">#FE7C6A</color>
+    <color name="sgr">#F96545</color>
+    <color name="mgm">#FF7056</color>
+    <color name="bitWhite">#E6FFFFFF</color>
+
+    <color name="purple">#DF65E4</color>
+    <color name="orange">#EE7556</color>
 </resources>
