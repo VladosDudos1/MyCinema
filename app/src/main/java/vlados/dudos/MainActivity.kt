@@ -1,33 +1,25 @@
 package vlados.dudos
 
-
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.text.method.Touch
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.fragment_now.*
 import vlados.dudos.Adapters.GenreAdapter
 import vlados.dudos.Case.openFragment
-import vlados.dudos.Case.twString
+import vlados.dudos.Case.request
+import vlados.dudos.Models.Genre
 import vlados.dudos.app.App
 import vlados.dudos.fragments.NowFragment
 import vlados.dudos.fragments.PopularFragment
 import vlados.dudos.fragments.SoonFragment
 
-class MainActivity : AppCompatActivity(){
-
+class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,19 +28,13 @@ class MainActivity : AppCompatActivity(){
 
         openNowFragment()
 
-        val disp = App.dm.api
-            .getGenre()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({i ->
-                rv_g.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-                rv_g.adapter = GenreAdapter(i.genres)
-            },{
-                Log.d("", "")
-            })
+        toFavorite.setOnClickListener {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
 
         text1.setOnClickListener {
 
+            sc_view.smoothScrollTo(0, 0)
             openNowFragment()
             text1.setTextColor(Color.parseColor("#000000"))
             text2.setTextColor(Color.parseColor("#40000000"))
@@ -58,6 +44,7 @@ class MainActivity : AppCompatActivity(){
             text3.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         }
         text2.setOnClickListener {
+            sc_view.smoothScrollTo(350, 0)
             openBoxFragment()
             text2.setTextColor(Color.parseColor("#000000"))
             text1.setTextColor(Color.parseColor("#40000000"))
@@ -67,6 +54,7 @@ class MainActivity : AppCompatActivity(){
             text1.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         }
         text3.setOnClickListener {
+            sc_view.smoothScrollTo(1000, 0)
             openSoonFragment()
             text3.setTextColor(Color.parseColor("#000000"))
             text1.setTextColor(Color.parseColor("#40000000"))
@@ -90,6 +78,7 @@ class MainActivity : AppCompatActivity(){
         changeFragment(NowFragment())
         openFragment = "now"
 
+        request = 0
         text1.setTextColor(Color.parseColor("#000000"))
         text2.setTextColor(Color.parseColor("#40000000"))
         text3.setTextColor(Color.parseColor("#40000000"))
@@ -101,15 +90,16 @@ class MainActivity : AppCompatActivity(){
     fun openBoxFragment() {
         changeFragment(PopularFragment())
         openFragment = "box"
+        request = 0
     }
 
     fun openSoonFragment() {
         changeFragment(SoonFragment())
         openFragment = "soon"
+        request = 0
     }
 
     override fun onBackPressed() {
-
         if (openFragment != "now") {
             openNowFragment()
         } else finishAffinity()

@@ -3,56 +3,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:layout_marginStart="24dp"
-    android:layout_marginEnd="24dp"
-    android:orientation="vertical">
+    android:layout_marginEnd="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/main_layout"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
 
-
-        <androidx.cardview.widget.CardView
+        <FrameLayout
             android:layout_width="300dp"
-            android:layout_height="400dp"
-            app:cardCornerRadius="50dp">
-
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="315dp"
-                android:layout_height="450dp"
-                android:layout_gravity="center"
-                android:src="@drawable/john_wick_chapter_three_ver" />
-
-        </androidx.cardview.widget.CardView>
+            android:layout_height="450dp">
 
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="Ford v Ferrari"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="300dp"
+                android:layout_height="400dp"
+                app:cardCornerRadius="32dp">
 
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="315dp"
+                    android:layout_height="450dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/john_wick_chapter_three_ver" />
 
-        <TextView
-            android:id="@+id/raiting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:drawableStart="@drawable/star"
-            android:drawablePadding="4dp"
-            android:text="9.9"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height= "128dp"
+                app:cardCornerRadius="24dp"
+                android:layout_gravity="bottom"
+                app:cardBackgroundColor="@color/cardview_dark_background">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/sec_gradient"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:maxLines="1"
+                        android:text="Ford v Ferrari"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"/>
+
+                    <RatingBar
+                        android:id="@+id/raiting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize=".5"
+                        android:max="5"
+                        android:isIndicator="false"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:layout_margin="12dp"
+                        android:rating="3"
+                        android:layout_gravity="center"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
 
     </LinearLayout>
 

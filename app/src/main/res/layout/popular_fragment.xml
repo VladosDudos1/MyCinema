@@ -1,14 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_popular"
+
+    <FrameLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="38dp"
-        android:visibility="gone" />
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_popular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="48dp"
+            android:visibility="gone" />
+
+
+        <com.github.florent37.shapeofview.shapes.RoundRectView
+            android:id="@+id/start_rv_arrow"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="left|center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="6dp"
+            android:visibility="gone"
+            app:shape_roundRect_bottomRightRadius="30dp"
+            app:shape_roundRect_topRightRadius="30dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/red_gradient">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_gravity="center"
+                    android:layout_height="50dp"
+                    android:src="@drawable/arrow"
+                    android:tint="@color/white"/>
+            </FrameLayout>
+
+
+        </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+        <com.github.florent37.shapeofview.shapes.RoundRectView
+            android:id="@+id/pb_load"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="right|center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="6dp"
+            android:visibility="gone"
+            app:shape_roundRect_bottomLeftRadius="30dp"
+            app:shape_roundRect_topLeftRadius="30dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/red_gradient">
+
+                <ProgressBar
+                    android:layout_width="50dp"
+                    android:layout_gravity="center"
+                    android:layout_height="50dp"
+                    android:indeterminateTint="@color/colorPrimary" />
+            </FrameLayout>
+
+
+        </com.github.florent37.shapeofview.shapes.RoundRectView>
+    </FrameLayout>
 
     <ProgressBar
         android:id="@+id/pb_popular"

@@ -1,6 +1,5 @@
 package vlados.dudos
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,20 +9,20 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.activity_search.*
 import vlados.dudos.Adapters.SearchAdapter
 import vlados.dudos.Models.Result
 import vlados.dudos.app.App
-
+import java.util.*
 
 
 class SearchActivity : AppCompatActivity(), TextWatcher, SearchAdapter.OnClickListener {
 
-    override fun click(data: Result){
+    override fun click(data: Result) {
         startActivity(Intent(this, InfoActivity::class.java))
     }
 
@@ -36,15 +35,22 @@ class SearchActivity : AppCompatActivity(), TextWatcher, SearchAdapter.OnClickLi
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-       val disp = App.dm.api
-            .search(edit_text.text.toString())
+        val disp = App.dm.api
+            .searchAdult(edit_text.text.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({s ->
-                pb_search.visibility =View.GONE
+            .subscribe({ s ->
                 rv_search.layoutManager = LinearLayoutManager(this)
-                rv_search.adapter = SearchAdapter(s.results, this)
 
+
+                for (i in 0..s.results.size - 1) {
+                    for (j in 0..s.results.size - 1) {
+                        if (i != j && s.results[i].vote_average > s.results[j].vote_average) {
+                            Collections.swap(s.results, i, j)
+                        }
+                    }
+                }
+                rv_search.adapter = SearchAdapter(s.results, this)
                 rv_search.visibility = View.VISIBLE
                 pb_search.visibility = View.GONE
             }, {
@@ -55,7 +61,6 @@ class SearchActivity : AppCompatActivity(), TextWatcher, SearchAdapter.OnClickLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
 
         done_card.setOnClickListener {
             val view = this.currentFocus

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +7,11 @@
     android:background="@color/white"
     tools:context=".InfoActivity">
 
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -186,28 +191,11 @@
             </com.github.florent37.shapeofview.shapes.RoundRectView>
 
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="24dp"
-                android:onClick="back"
-                app:cardCornerRadius="8dp">
-
-
-                <ImageView
-                    android:id="@+id/arrow_back"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:src="@drawable/arrow" />
-            </androidx.cardview.widget.CardView>
-
-
         </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="96dp"
+            android:layout_height="100dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
@@ -228,13 +216,13 @@
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="match_parent"
-                        android:layout_height="43dp"
+                        android:layout_height="57dp"
                         android:layout_marginEnd="8dp"
                         android:ellipsize="end"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:text="Ford v Ferrari"
                         android:textColor="@color/black"
-                        android:textSize="28sp" />
+                        android:textSize="24sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -278,17 +266,40 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card1"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 app:cardBackgroundColor="@color/pink"
                 app:cardCornerRadius="16dp">
 
+
                 <ImageView
+                    android:id="@+id/favorite_card"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:padding="8dp"
                     android:src="@drawable/ic_add_black_24dp" />
 
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card2"
+                android:layout_width="64dp"
+                android:visibility="gone"
+                android:layout_height="64dp"
+                app:cardBackgroundColor="@color/red"
+                app:cardCornerRadius="16dp">
+
+
+                <ImageView
+                    android:id="@+id/delete_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_close_black_24dp" />
 
             </androidx.cardview.widget.CardView>
         </LinearLayout>
@@ -296,7 +307,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_con_g"
             android:layout_width="match_parent"
-            android:layout_height="45dp" />
+            android:layout_height="45dp"
+            android:layout_marginTop="12dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -310,7 +322,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:gravity="left"
-                android:text="Plot Summary"
+                android:text="Краткий сюжет:"
                 android:textColor="@color/black"
                 android:textSize="28sp" />
 
@@ -337,7 +349,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="12dp"
             android:gravity="left"
-            android:text="Cast and Crew"
+            android:text="Актёрский состав"
             android:textColor="@color/black"
             android:textSize="26sp" />
 
@@ -346,7 +358,8 @@
             android:id="@+id/pb_cast"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="32dp" />
+            android:indeterminateTint="@color/colorAccent"
+            android:layout_margin="32dp"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -363,4 +376,32 @@
             android:visibility="gone" />
 
     </LinearLayout>
-</ScrollView>
+
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/arrow_back"
+        android:layout_width="44dp"
+        android:background="@drawable/cv_shape"
+        android:layout_height="44dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:onClick="back"
+        android:src="@drawable/arrow" />
+
+
+    <ImageView
+        android:id="@+id/youtube_trailer"
+        android:layout_width="44dp"
+        android:background="@drawable/cv_shape"
+        android:layout_height="44dp"
+        android:layout_marginEnd="20dp"
+        android:onClick="openTrailer"
+        android:layout_gravity="top|right"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/youtube"
+        android:padding="6dp"/>
+
+</FrameLayout>

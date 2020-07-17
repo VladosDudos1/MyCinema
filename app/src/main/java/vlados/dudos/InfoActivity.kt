@@ -1,34 +1,95 @@
 package vlados.dudos
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_favorite.*
 import kotlinx.android.synthetic.main.activity_info.*
 import kotlinx.android.synthetic.main.activity_main.*
 import vlados.dudos.Adapters.CastAdapter
 import vlados.dudos.Adapters.GenreAdapter
+import vlados.dudos.Case.favoritelist
 import vlados.dudos.Case.id
 import vlados.dudos.Case.item
+import vlados.dudos.Case.request
 import vlados.dudos.Models.Genre
 import vlados.dudos.Models.GenreModel
+import vlados.dudos.Models.RateBodyModel
+import vlados.dudos.Models.Result
 import vlados.dudos.app.App
 import java.lang.Exception
+import java.util.*
+import kotlin.concurrent.timerTask
 
-class InfoActivity : AppCompatActivity() {
+class InfoActivity : AppCompatActivity(), GenreAdapter.OnClickListener {
 
+    override fun click(data: Genre) {
+
+    }
     var jList = listOf<Genre>()
 
     var resultList = mutableListOf<Genre>()
 
+    var video_key = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
+
+        var guest = ""
+
+        rate_layout.setOnClickListener {
+
+            var bodyElement: RateBodyModel = RateBodyModel(9.0)
+
+            val getGuest = App.dm.api
+                .guestSession()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({i->
+                    guest = i.guest_session_id
+                },{
+                    Log.d("","")
+                })
+
+            val disp = App.dm.api
+                .postValue(item!!.id.toString(), guest, bodyElement)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({p ->
+                    Toast.makeText(this, p.status_message, Toast.LENGTH_SHORT).show()
+                }, {
+                    Log.d("", "")
+                })
+
+        }
+
+        val sharedPreferences = getSharedPreferences("item_id", Context.MODE_PRIVATE)
+        val gson2 = Gson()
+        val json2 = sharedPreferences.getString("favorite_list", null)
+        val turnsType = object : TypeToken<MutableList<Result>>() {}.type
+
+        try {
+            favoritelist = gson2.fromJson(json2, turnsType)
+        } catch (e: Exception) {
+        }
 
         try {
             Glide.with(img_info)
@@ -38,18 +99,49 @@ class InfoActivity : AppCompatActivity() {
         } catch (e: Exception) {
         }
 
+        favorite_card.setOnClickListener {
+            card1.visibility = View.GONE
+            card2.visibility = View.VISIBLE
+            val gson = Gson()
+            favoritelist.add(item!!)
+            val json = gson.toJson(favoritelist)
+            sharedPreferences.edit().putString("favorite_list", json).apply()
+        }
 
-        name.text = item!!.original_title
+        delete_card.setOnClickListener {
+            card1.visibility = View.VISIBLE
+            card2.visibility = View.GONE
 
-        raiting_info.text = item!!.vote_average.toString()
+            val gson = Gson()
+            favoritelist.remove(item!!)
+            val json = gson.toJson(favoritelist)
+            sharedPreferences.edit().putString("favorite_list", json).apply()
+        }
 
-        voices.text = item!!.popularity.toString()
+        try {
+            name.text = item!!.title
 
-        plot.text = item!!.overview
+            raiting_info.text = item!!.vote_average.toString()
 
-        realise_date.text = item!!.release_date.removeRange(4..9)
+            voices.text = item!!.vote_count.toString()
 
-        language_txt.text = item!!.original_language
+            plot.text = item!!.overview
+
+            realise_date.text = item!!.release_date.removeRange(4..9)
+
+            language_txt.text = item!!.original_language
+        } catch (e: Exception) {
+        }
+
+
+        if (item in favoritelist) {
+            card1.visibility = View.GONE
+            card2.visibility = View.VISIBLE
+        }
+        if (item !in favoritelist) {
+            card1.visibility = View.VISIBLE
+            card2.visibility = View.GONE
+        }
 
         if (item!!.adult == true) {
             adult.text = "18+"
@@ -87,13 +179,42 @@ class InfoActivity : AppCompatActivity() {
                 }
                 rv_con_g.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-                rv_con_g.adapter = GenreAdapter(resultList)
+                rv_con_g.adapter = GenreAdapter(resultList, this,applicationContext)
             }, {
                 Log.d("", "")
+            })
+
+        val dispXD = App.dm.api
+            .findTrailer(item!!.id.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({i ->
+                video_key = i.results[0].key
+            },{
+                youtube_trailer.visibility = View.GONE
             })
     }
 
     fun back(view: View) {
         super.onBackPressed()
+        if (request == 1) {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (request == 1) {
+            startActivity(Intent(this, FavoriteActivity::class.java))
+        }
+    }
+
+    fun openTrailer(view: View) {
+        try {
+            val openUrl = Intent(Intent.ACTION_VIEW)
+            openUrl.data = Uri.parse("https://youtube.com/watch?v=" + video_key)
+            startActivity(openUrl)
+        } catch (e:Exception){}
+
     }
 }

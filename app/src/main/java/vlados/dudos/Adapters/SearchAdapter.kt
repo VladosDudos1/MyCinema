@@ -34,6 +34,7 @@ class SearchAdapter(val list: List<Result>, val onClickListener: OnClickListener
 
         holder.itemView.name_search.text = list[position].title
         holder.itemView.plot_search.text = list[position].overview
+        holder.itemView.raiting_search.text = list[position].vote_average.toString()
     }
 
     class SearchView(view: View): RecyclerView.ViewHolder(view)
