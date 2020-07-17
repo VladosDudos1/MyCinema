@@ -50,9 +50,10 @@
 
 
             <HorizontalScrollView
+                android:id="@+id/sc_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="24dp"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -102,18 +103,12 @@
             </HorizontalScrollView>
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_g"
-                android:layout_marginTop="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
 
             <FrameLayout
                 android:id="@+id/fragment_holder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="32dp" />
         </LinearLayout>
     </ScrollView>

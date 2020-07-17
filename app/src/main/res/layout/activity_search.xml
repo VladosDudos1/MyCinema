@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SearchActivity"
     android:background="@color/darkWhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -23,40 +23,40 @@
                 android:id="@+id/backarrow"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/arrow"
                 android:layout_gravity="center_vertical"
-                android:background="?selectableItemBackgroundBorderless"/>
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/arrow" />
 
             <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_marginStart="60dp"
                 android:layout_marginEnd="62dp"
                 android:background="@drawable/edit_shape"
-                android:layout_gravity="center"
-                android:textSize="22sp"
+                android:gravity="center"
+                android:hint="Enter Movie Name"
                 android:maxLength="16"
-                android:padding="2dp"
                 android:maxLines="1"
+                android:padding="2dp"
                 android:textColor="@color/black"
-                android:hint="Enter Movie Name"/>
+                android:textSize="22sp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/done_card"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                app:cardCornerRadius="12dp"
+                android:layout_gravity="right|center"
                 android:layout_marginEnd="8dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:layout_gravity="right|center">
+                app:cardCornerRadius="12dp">
 
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gradient"/>
+                    android:background="@drawable/gradient" />
 
                 <ImageView
                     android:layout_width="32dp"
@@ -72,24 +72,23 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ProgressBar
-        android:visibility="invisible"
         android:id="@+id/pb_search"
-        android:indeterminateTint="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp"
+        android:indeterminateTint="@color/colorAccent"
+        android:visibility="invisible" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        android:layout_marginBottom="8dp"
         android:id="@+id/rv_search"
-        android:background="@color/darkWhite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/darkWhite"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:visibility="gone" />
 
 
 </LinearLayout>

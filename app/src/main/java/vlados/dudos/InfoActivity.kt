@@ -3,15 +3,20 @@ package vlados.dudos
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_favorite.*
@@ -25,22 +30,56 @@ import vlados.dudos.Case.item
 import vlados.dudos.Case.request
 import vlados.dudos.Models.Genre
 import vlados.dudos.Models.GenreModel
+import vlados.dudos.Models.RateBodyModel
 import vlados.dudos.Models.Result
 import vlados.dudos.app.App
 import java.lang.Exception
 import java.util.*
 import kotlin.concurrent.timerTask
 
-class InfoActivity : AppCompatActivity() {
+class InfoActivity : AppCompatActivity(), GenreAdapter.OnClickListener {
 
+    override fun click(data: Genre) {
 
+    }
     var jList = listOf<Genre>()
 
     var resultList = mutableListOf<Genre>()
 
+    var video_key = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
+
+        var guest = ""
+
+        rate_layout.setOnClickListener {
+
+            var bodyElement: RateBodyModel = RateBodyModel(9.0)
+
+            val getGuest = App.dm.api
+                .guestSession()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({i->
+                    guest = i.guest_session_id
+                },{
+                    Log.d("","")
+                })
+
+            val disp = App.dm.api
+                .postValue(item!!.id.toString(), guest, bodyElement)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({p ->
+                    Toast.makeText(this, p.status_message, Toast.LENGTH_SHORT).show()
+                }, {
+                    Log.d("", "")
+                })
+
+        }
 
         val sharedPreferences = getSharedPreferences("item_id", Context.MODE_PRIVATE)
         val gson2 = Gson()
@@ -140,9 +179,19 @@ class InfoActivity : AppCompatActivity() {
                 }
                 rv_con_g.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-                rv_con_g.adapter = GenreAdapter(resultList)
+                rv_con_g.adapter = GenreAdapter(resultList, this,applicationContext)
             }, {
                 Log.d("", "")
+            })
+
+        val dispXD = App.dm.api
+            .findTrailer(item!!.id.toString())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({i ->
+                video_key = i.results[0].key
+            },{
+                youtube_trailer.visibility = View.GONE
             })
     }
 
@@ -158,5 +207,14 @@ class InfoActivity : AppCompatActivity() {
         if (request == 1) {
             startActivity(Intent(this, FavoriteActivity::class.java))
         }
+    }
+
+    fun openTrailer(view: View) {
+        try {
+            val openUrl = Intent(Intent.ACTION_VIEW)
+            openUrl.data = Uri.parse("https://youtube.com/watch?v=" + video_key)
+            startActivity(openUrl)
+        } catch (e:Exception){}
+
     }
 }
