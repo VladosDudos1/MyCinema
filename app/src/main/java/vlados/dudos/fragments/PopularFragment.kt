@@ -45,14 +45,7 @@ class PopularFragment : Fragment(), RvAdapterPopular.OnClickListener {
         val layout = asd.layout
         val recycler = asd.rv_popular
         val progressB = asd.pb_popular
-        val start_rv = asd.start_rv_arrow
 
-
-        start_rv.setOnClickListener {
-            start_rv.visibility = View.GONE
-            recycler.smoothScrollToPosition(0)
-            pb_load_s.visibility = View.GONE
-        }
 
         val disp = App.dm.api
             .getPopular(page)
@@ -80,10 +73,6 @@ class PopularFragment : Fragment(), RvAdapterPopular.OnClickListener {
                 super.onScrollStateChanged(recyclerView, newState)
                 val manager: LinearLayoutManager = recycler.getLayoutManager() as LinearLayoutManager
 
-                if (manager.findFirstVisibleItemPosition() != 0){
-                    start_rv_arrow.visibility = View.VISIBLE
-                }
-
                 if (newState == 0 && manager.findLastVisibleItemPosition() == newPop.size - 1) {
                     pb_load.visibility = View.VISIBLE
                     page+=1
@@ -106,10 +95,22 @@ class PopularFragment : Fragment(), RvAdapterPopular.OnClickListener {
                             Toast.makeText(activity, "You have no internet!", Toast.LENGTH_LONG).show()
                         })
                 }
+                if (manager.findFirstVisibleItemPosition() > 0){
+                    start_rv_arrow.visibility = View.VISIBLE
+                } else start_rv_arrow.visibility = View.GONE
             }
         })
 
         return asd
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        start_rv_arrow.setOnClickListener {
+            rv_popular.smoothScrollToPosition(0)
+            pb_load.visibility = View.GONE
+        }
     }
 }
 

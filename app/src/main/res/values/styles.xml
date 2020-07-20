@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlActivated">@color/bitWhite</item>
-        <item name="colorControlNormal">@color/bitWhite</item>
+        <item name="colorControlActivated">@color/bigYellow</item>
+        <item name="colorControlNormal">@color/bigYellow</item>
     </style>
 
     <style name="AppTheme.Splash" parent="AppTheme">

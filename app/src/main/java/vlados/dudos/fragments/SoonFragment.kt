@@ -73,11 +73,7 @@ class SoonFragment : Fragment(), RvSoonAdapter.OnClickListener {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 val manager: LinearLayoutManager =
-                    recycler.getLayoutManager() as LinearLayoutManager
-
-                if (manager.findFirstVisibleItemPosition() != 0){
-                    start_rv.visibility = View.VISIBLE
-                }
+                    recycler.layoutManager as LinearLayoutManager
 
                 if (newState == 0 && manager.findLastVisibleItemPosition() == newSoon.size - 1) {
                     page += 1
@@ -100,13 +96,15 @@ class SoonFragment : Fragment(), RvSoonAdapter.OnClickListener {
                                 .show()
                         })
                 }
+                if (manager.findFirstVisibleItemPosition() != 0) {
+                    start_rv.visibility = View.VISIBLE
+                } else start_rv.visibility = View.GONE
             }
         })
         return asd
     }
 
-    fun start_rvScroll(view: View){
-        start_rv_arrow_s.visibility = View.GONE
+    fun start_rvScroll(view: View) {
         rv_soon.smoothScrollToPosition(0)
         pb_load_s.visibility = View.GONE
     }

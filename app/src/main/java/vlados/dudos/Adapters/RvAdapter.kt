@@ -39,6 +39,8 @@ class RvAdapter(val list: List<Result>, val onClickListener: OnClickListener) :
         holder.itemView.main_layout.setOnClickListener {
             onClickListener.click(list[position])
             item = list[position]
+            item!!.rated = true
+
             Case.id = list[position].id
         }
     }

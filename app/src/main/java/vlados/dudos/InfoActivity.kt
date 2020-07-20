@@ -42,43 +42,53 @@ class InfoActivity : AppCompatActivity(), GenreAdapter.OnClickListener {
     override fun click(data: Genre) {
 
     }
+
     var jList = listOf<Genre>()
 
     var resultList = mutableListOf<Genre>()
 
     var video_key = ""
 
+    var bodyElement: RateBodyModel = RateBodyModel(0.0)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
-        var guest = ""
-
         rate_layout.setOnClickListener {
 
-            var bodyElement: RateBodyModel = RateBodyModel(9.0)
-
-            val getGuest = App.dm.api
-                .guestSession()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({i->
-                    guest = i.guest_session_id
-                },{
-                    Log.d("","")
-                })
-
-            val disp = App.dm.api
-                .postValue(item!!.id.toString(), guest, bodyElement)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({p ->
-                    Toast.makeText(this, p.status_message, Toast.LENGTH_SHORT).show()
-                }, {
-                    Log.d("", "")
-                })
-
+            MaterialDialog(this)
+                .noAutoDismiss()
+                .title(text = "Выберите оценку")
+                .listItemsSingleChoice(
+                    items = listOf(
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10"
+                    ), selection = { dialog, i, text ->
+                        bodyElement = when (i) {
+                            0 -> RateBodyModel(1.0)
+                            1 -> RateBodyModel(2.0)
+                            2 -> RateBodyModel(3.0)
+                            3 -> RateBodyModel(4.0)
+                            4 -> RateBodyModel(5.0)
+                            5 -> RateBodyModel(6.0)
+                            6 -> RateBodyModel(7.0)
+                            7 -> RateBodyModel(8.0)
+                            8 -> RateBodyModel(9.0)
+                            else -> RateBodyModel(10.0)
+                        }
+                        dialog.cancel()
+                        postReq()
+                    }).show { }
         }
 
         val sharedPreferences = getSharedPreferences("item_id", Context.MODE_PRIVATE)
@@ -179,7 +189,7 @@ class InfoActivity : AppCompatActivity(), GenreAdapter.OnClickListener {
                 }
                 rv_con_g.layoutManager =
                     LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-                rv_con_g.adapter = GenreAdapter(resultList, this,applicationContext)
+                rv_con_g.adapter = GenreAdapter(resultList, this, applicationContext)
             }, {
                 Log.d("", "")
             })
@@ -188,9 +198,9 @@ class InfoActivity : AppCompatActivity(), GenreAdapter.OnClickListener {
             .findTrailer(item!!.id.toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({i ->
+            .subscribe({ i ->
                 video_key = i.results[0].key
-            },{
+            }, {
                 youtube_trailer.visibility = View.GONE
             })
     }
@@ -214,7 +224,36 @@ class InfoActivity : AppCompatActivity(), GenreAdapter.OnClickListener {
             val openUrl = Intent(Intent.ACTION_VIEW)
             openUrl.data = Uri.parse("https://youtube.com/watch?v=" + video_key)
             startActivity(openUrl)
-        } catch (e:Exception){}
+        } catch (e: Exception) {
+        }
+    }
 
+    fun postReq() {
+
+        var guest = ""
+
+        val getGuest = App.dm.api
+            .guestSession()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ i ->
+                guest = i.guest_session_id
+            }, {
+                Log.d("", "")
+            }, {
+                val disp = App.dm.api
+                    .postValue(item!!.id.toString(), guest, bodyElement)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ p ->
+                        Toast.makeText(
+                            this,
+                            "Спасибо за ваш отзыв!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }, {
+                        Log.d("", "")
+                    })
+            })
     }
 }

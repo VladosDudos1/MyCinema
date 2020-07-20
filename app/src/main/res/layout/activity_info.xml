@@ -118,10 +118,12 @@
 
 
                         <ImageView
+                            android:id="@+id/rate_img"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="8dp"
+                            android:tint="@color/black"
                             android:src="@drawable/ic_star_border_black_24dp" />
 
                         <TextView
